@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Xavier's Mood Changer</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body, html {
+      height: 100%;
+      font-family: 'Arial', sans-serif;
+      background-color: #893cfe; /* Updated background color */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .image-container img {
+      width: 300px;
+      height: auto;
+      border-radius: 15px;
+      box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease-in-out;
+    }
+
+    .button {
+      margin-top: 20px;
+      padding: 15px 30px;
+      background-color: #800080; /* Purple button */
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 18px;
+      font-family: 'Comic Sans MS', 'Comic Sans', cursive; /* Cool font */
+      transition: background-color 0.3s, transform 0.3s;
+    }
+
+    .button:hover {
+      background-color: #9400D3; /* Darker purple on hover */
+      transform: scale(1.05);
+    }
+
+    .button:active {
+      transform: scale(0.95);
+    }
+
+    .fade-text {
+      margin-top: 30px;
+      color: white;
+      font-size: 16px;
+      opacity: 0;
+      transition: opacity 0.7s ease-in-out; /* Faster fade */
+    }
+
+    .happy-button {
+      background-color: #800080; /* Purple for happy button */
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="image-container">
+    <img id="xavier-image" src="https://i.ibb.co/Yb3YQhq/xaviercri.webp" alt="Xavier Image">
+  </div>
+  <button id="xavier-button" class="button" onclick="toggleXavier()">Help Xavier Feel Better</button>
+  <div id="fade-text" class="fade-text"></div> </div>
+
+<script>
+  let isHappy = false;
+
+  // Clone arrays to use for looping later
+  let happyMessages = [
+    "you pat xavier",
+    "you make xavier a bowl of macaroni",
+    "you give xavier belly pats",
+    "you give xavier uppies",
+    "you spend time with xavier",
+    "you hug xavier",
+    "hi dave",
+    "you sing xavier a song",
+    "you read xavier a bedtime story",
+    "you give xavier a surprise gift",
+    "you play a game with xavier"
+  ];
+
+  let sadMessages = [
+    "you punch xavier in the face",
+    "you tell xavier he's stupid",
+    "you tell xavier you fucking hate him",
+    "you steal xavier's candy",
+    "you tell xavier he will never get anywhere in life",
+    "you blatantly ignore how xavier is feeling and instead make jokes about it",
+    "you remove xavier's ears",
+    "you destroy xavier's stuff",
+    "you embarrass xavier in front of his friends",
+    "you spill coffee on xavier's favorite shirt"
+  ];
+
+  let usedHappyMessages = [];
+  let usedSadMessages = [];
+
+  function getRandomMessage(isHappy) {
+    let messages, usedMessages;
+
+    if (isHappy) {
+      messages = happyMessages;
+      usedMessages = usedHappyMessages;
+    } else {
+      messages = sadMessages;
+      usedMessages = usedSadMessages;
+    }
+
+    // If we've used all messages, reset the messages array
+    if (messages.length === 0) {
+      if (isHappy) {
+        happyMessages = usedHappyMessages;
+        usedHappyMessages = [];
+        messages = happyMessages;
+      } else {
+        sadMessages = usedSadMessages;
+        usedSadMessages = [];
+        messages = sadMessages;
+      }
+    }
+
+    // Get a random message and move it to usedMessages
+    const randomIndex = Math.floor(Math.random() * messages.length);
+    const randomMessage = messages.splice(randomIndex, 1)[0];
+    usedMessages.push(randomMessage);
+
+    return randomMessage;
+  }
+
+  function toggleXavier() {
+    const image = document.getElementById('xavier-image');
+    const button = document.getElementById('xavier-button');
+    const fadeText = document.getElementById('fade-text');
+
+    // Toggle between happy and sad states
+    if (isHappy) {
+      image.src = 'https://i.ibb.co/Yb3YQhq/xaviercri.webp';
+      button.textContent = "Help Xavier Feel Better";
+      button.classList.remove('happy-button'); // Remove happy button class
+    } else {
+      image.src = 'https://i.ibb.co/4TmrL0C/Untitled1535-20231130173816.png';
+      button.textContent = "Fuck Xavier's Day Up and Make Him Cry";
+      button.classList.add('happy-button'); // Add happy button class
+    }
+
+    // Get random message for the opposite state
+    const randomMessage = getRandomMessage(!isHappy);
+    fadeText.textContent = randomMessage;
+    fadeText.style.opacity = 1;
+
+    // Fade out text a bit quicker
+    setTimeout(() => {
+      fadeText.style.opacity = 0;
+    }, 1500); // Text fades out after 1.5 seconds
+
+    isHappy = !isHappy;
+  }
+</script>
+
+</body>
+</html>
